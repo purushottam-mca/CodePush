@@ -1,0 +1,76 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+  "manifest_version": 3,
+  "name": "CodePush - Push LeetCode & GFG solutions to GitHub",
+  "version": "3.0",
+  "description": "Automatically sync LeetCode and GeeksforGeeks solutions to your personal GitHub repository.",
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "icons": {
+    "16": "icons/icons16.png",
+    "48": "icons/icons48.png",
+    "128": "icons/icons128.png"
+  },
+  "host_permissions": [
+    "https://leetcode.com/*",
+    "https://api.github.com/*",
+    "https://*.geeksforgeeks.org/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "CodePush Settings"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://leetcode.com/problems/*"
+      ],
+      "js": [
+        "lib/utils/storage.js",
+        "lib/utils/language.js",
+        "lib/utils/difficulty.js",
+        "lib/utils/markdown.js",
+        "lib/utils/notification.js",
+        "lib/platforms/platformAdapter.js",
+        "lib/platforms/leetcode/graphql.js",
+        "lib/platforms/leetcode/scraper.js",
+        "lib/platforms/leetcode/observer.js",
+        "content/content_lc.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://practice.geeksforgeeks.org/problems/*",
+        "https://www.geeksforgeeks.org/problems/*"
+      ],
+      "js": [
+        "lib/utils/storage.js",
+        "lib/utils/language.js",
+        "lib/utils/difficulty.js",
+        "lib/utils/markdown.js",
+        "lib/utils/notification.js",
+        "lib/platforms/platformAdapter.js",
+        "lib/platforms/gfg/scraper.js",
+        "lib/platforms/gfg/observer.js",
+        "content/content_gfg.js"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background/background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/inject.js"
+      ],
+      "matches": [
+        "https://leetcode.com/*",
+        "https://*.geeksforgeeks.org/*"
+      ]
+    }
+  ]
+}
